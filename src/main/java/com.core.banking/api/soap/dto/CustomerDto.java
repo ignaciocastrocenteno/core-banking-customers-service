@@ -3,16 +3,18 @@ package com.core.banking.dto;
 import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+/**
+ * SOAP DTO representing a banking customer
+ */
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerDto {
 
+    private Long id;
     private String fullName;
     private String documentNumber;
     private LocalDate birthDate;
