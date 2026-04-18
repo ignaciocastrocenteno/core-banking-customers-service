@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://core.banking/customer"
+        targetNamespace="http://core.banking/customer"
+        elementFormDefault="qualified">
+
+    <!-- ===== Request ===== -->
+    <xs:element name="GetCustomerByDocumentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="documentNumber" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ===== Response ===== -->
+    <xs:element name="GetCustomerByDocumentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer" type="tns:Customer" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ===== Customer DTO ===== -->
+    <xs:complexType name="Customer">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="fullName" type="xs:string"/>
+            <xs:element name="documentNumber" type="xs:string"/>
+            <xs:element name="birthDate" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
