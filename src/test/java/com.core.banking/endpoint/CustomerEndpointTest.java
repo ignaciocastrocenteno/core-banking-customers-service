@@ -2,6 +2,7 @@ package com.core.banking.endpoint;
 
 import com.core.banking.domain.Customer;
 import com.core.banking.service.CustomerService;
+import com.core.banking.endpoint.CustomerEndpoint;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
