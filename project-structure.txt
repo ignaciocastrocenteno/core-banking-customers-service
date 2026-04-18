@@ -1,7 +1,7 @@
-bank-customer-soap-api
+core-banking-customers-service
 │
 ├── pom.xml
-├── README.md (se genera al final)
+├── README.md
 │
 └── src
     ├── main
