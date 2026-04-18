@@ -1,0 +1,25 @@
+bank-customer-soap-api
+│
+├── pom.xml
+├── README.md (se genera al final)
+│
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com.bank.customer
+    │   │       ├── config
+    │   │       ├── endpoint
+    │   │       ├── service
+    │   │       ├── domain
+    │   │       ├── repository
+    │   │       └── BankCustomerSoapApplication.java
+    │   │
+    │   └── resources
+    │       ├── application.yml
+    │       └── xsd
+    │           └── customer.xsd
+    │
+    └── test
+        └── java
+            └── com.bank.customer
+                └── service
