@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+
+    <!-- ================= BANKING TEST PLAN ================= -->
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Customer SOAP Load Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments">
+        Performance and load test for Core Banking Customer SOAP Service
+      </stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="HOST" elementType="Argument">
+            <stringProp name="Argument.name">HOST</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="PORT" elementType="Argument">
+            <stringProp name="Argument.name">PORT</stringProp>
+            <stringProp name="Argument.value">8080</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+    </TestPlan>
+
+    <hashTree>
+
+      <!-- ================= THREAD GROUP ================= -->
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Customer SOAP Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+         <!-- Iterations per thread -->
+          <stringProp name="LoopController.loops">10</stringProp>
+        </elementProp>
+        <!-- Amount of concurrent testing users -->
+        <stringProp name="ThreadGroup.num_threads">50</stringProp>
+        <!-- Ramp-up period (seconds) - time to reach full load -->
+        <stringProp name="ThreadGroup.ramp_time">30</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+
+      <hashTree>
+
+        <!-- ================= CSV DATA SET ================= -->
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Customer CSV Data" enabled="true">
+          <stringProp name="filename">jmeter/data/customers.csv</stringProp>
+          <stringProp name="fileEncoding">UTF-8</stringProp>
+          <stringProp name="variableNames">documentNumber</stringProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <boolProp name="stopThread">false</boolProp>
+        </CSVDataSet>
+
+        <hashTree/>
+
+        <!-- ================= HTTP SAMPLER ================= -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Invoke GetCustomerByDocument SOAP Service" enabled="true">
+          <stringProp name="HTTPSampler.domain">${HOST}</stringProp>
+          <stringProp name="HTTPSampler.port">${PORT}</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.path">/ws</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">
+<![CDATA[
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:cus="http://core.banking/customer">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:GetCustomerByDocumentRequest>
+         <cus:documentNumber>${documentNumber}</cus:documentNumber>
+      </cus:GetCustomerByDocumentRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+]]>
+                </stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+
+        <hashTree>
+
+          <!-- ================= HEADER MANAGER ================= -->
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">text/xml; charset=UTF-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">SOAPAction</stringProp>
+                <stringProp name="Header.value">""</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+
+          <hashTree/>
+        </hashTree>
+
+        <!-- ================= LISTENERS ================= -->
+        <SummaryReport guiclass="SummaryReportGui" testclass="SummaryReport" testname="Summary Report" enabled="true"/>
+        <hashTree/>
+
+        <AggregateReport guiclass="AggregateReportGui" testclass="AggregateReport" testname="Aggregate Report" enabled="true"/>
+        <hashTree/>
+
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
